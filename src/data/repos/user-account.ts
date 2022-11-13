@@ -11,7 +11,7 @@ namespace LoadUserAccountRepository {
 }
 
 export interface CreateFacebookAccountRepository {
-  createFromFacebook: (params: LoadUserAccountRepository.Params) => LoadUserAccountRepository.Result
+  createFromFacebook: (params: CreateFacebookAccountRepository.Params) => CreateFacebookAccountRepository.Result
 }
 
 namespace CreateFacebookAccountRepository {
