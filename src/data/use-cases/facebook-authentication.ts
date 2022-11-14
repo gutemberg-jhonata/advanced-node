@@ -11,10 +11,10 @@ export class FacebookAuthenticationUseCase {
     const fbData = await this.facebookApi.loadUser(params)
     if (fbData !== undefined) {
       const userFromDb = await this.userAccountRepo.load({ email: fbData.email })
-      if (userFromDb?.name !== undefined) {
+      if (userFromDb !== undefined) {
         await this.userAccountRepo.updateWithFacebook({
           id: userFromDb.id,
-          name: userFromDb.name,
+          name: userFromDb.name ?? fbData.name,
           facebookId: fbData.facebookId
         })
       } else {
