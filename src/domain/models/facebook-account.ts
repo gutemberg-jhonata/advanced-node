@@ -1,4 +1,3 @@
-
 export type FacebookData = {
   name: string
   email: string
