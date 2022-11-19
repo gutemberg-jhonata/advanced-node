@@ -32,7 +32,9 @@ describe('FacebookAuthenticationUseCase', () => {
     userAccountRepo = mock()
     userAccountRepo.load.mockResolvedValue(undefined)
     userAccountRepo.saveWithFacebook.mockResolvedValue({ id: 'any_account_id' })
+
     crypto = mock()
+    crypto.generateToken.mockResolvedValue('any_generated_token')
 
     sut = new FacebookAuthenticationUseCase(
       facebookApi,
@@ -49,7 +51,7 @@ describe('FacebookAuthenticationUseCase', () => {
   })
 
   it('should return AuthenticationError when LoadFacebookUserApi returns undefined', async () => {
-    // loadFacebookUserApi.loadUser.mockResolvedValueOnce(undefined)
+    facebookApi.loadUser.mockResolvedValueOnce(undefined)
     const authResult = await sut.perform({ token })
 
     expect(authResult).toEqual(new AuthenticationError())
@@ -77,5 +79,11 @@ describe('FacebookAuthenticationUseCase', () => {
       expirationInMs: AccessToken.expirationInMs
     })
     expect(crypto.generateToken).toHaveBeenCalledTimes(1)
+  })
+
+  it('should return an accesToken on success', async () => {
+    const authResult = await sut.perform({ token })
+
+    expect(authResult).toEqual(new AccessToken('any_generated_token'))
   })
 })
