@@ -19,9 +19,12 @@ describe('FacebookAuthenticationUseCase', () => {
   let userAccountRepo: MockProxy<LoadUserAccountRepository & SaveFacebookAccountRepository>
   let crypto: MockProxy<TokenGenerator>
   let sut: FacebookAuthenticationUseCase
-  const token = 'any_token'
 
-  beforeEach(() => {
+  let token: string
+
+  beforeAll(() => {
+    token = 'any_token'
+
     facebookApi = mock()
     facebookApi.loadUser.mockResolvedValue({
       name: 'any_fb_name',
@@ -35,7 +38,9 @@ describe('FacebookAuthenticationUseCase', () => {
 
     crypto = mock()
     crypto.generateToken.mockResolvedValue('any_generated_token')
+  })
 
+  beforeEach(() => {
     sut = new FacebookAuthenticationUseCase(
       facebookApi,
       userAccountRepo,
